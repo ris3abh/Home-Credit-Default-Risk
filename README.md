@@ -10,6 +10,9 @@ While Home Credit is currently using various statistical and machine learning me
 ## Dataset Description
 The datasets used in this project include:
 
+![Data Representation](src/home_credit.png)
+
+
 - **application_{train|test}.csv**: Static data for all applications. One row represents one loan in our data sample.
 - **bureau.csv**: All client's previous credits provided by other financial institutions that were reported to Credit Bureau.
 - **bureau_balance.csv**: Monthly balances of previous credits in Credit Bureau.
