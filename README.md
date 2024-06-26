@@ -31,7 +31,6 @@ For each `SK_ID_CURR` in the test set, you must predict a probability for the `T
 3. pip install -r requirements.txt
 4. Refer to the code in EDA and XGB modeling notebook for initial EDA and model building
 
-## Model Performance
 
 <h2 style="text-align: center;">Model Performance</h2>
     <table>
@@ -61,3 +60,7 @@ For each `SK_ID_CURR` in the test set, you must predict a probability for the `T
             <td>0.547492</td>
         </tr>
     </table>
+
+Overall, the model shows reasonably consistent performance across the training and test sets, as indicated by similar values for accuracy, precision, recall, and ROC AUC. This consistency suggests that the model is not overfitting excessively to the training data and is generalizing reasonably well to unseen data. However, the low values of precision and recall indicate that the model may need further tuning or feature engineering to improve its ability to correctly classify positive cases (defaults) while minimizing false positives and false negatives.
+
+The fact that, even the SMOTING algorithm was not helpful to improve the model performance, it is possible that the model is not able to capture the underlying patterns in the data effectively. This could be due to the presence of noise or irrelevant features in the dataset, or it could be a limitation of the chosen algorithm. Further exploration of the data and experimentation with different algorithms and hyperparameters may be necessary to improve the model's performance.
