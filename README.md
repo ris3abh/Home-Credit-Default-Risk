@@ -29,3 +29,35 @@ For each `SK_ID_CURR` in the test set, you must predict a probability for the `T
 1. python -m venv henv
 2. source henv/bin/activate
 3. pip install -r requirements.txt
+4. Refer to the code in EDA and XGB modeling notebook for initial EDA and model building
+
+## Model Performance
+
+<h2 style="text-align: center;">Model Performance</h2>
+    <table>
+        <tr>
+            <th>Metric</th>
+            <th>Train</th>
+            <th>Test</th>
+        </tr>
+        <tr>
+            <td>Accuracy</td>
+            <td>0.890630</td>
+            <td>0.889550</td>
+        </tr>
+        <tr>
+            <td>Precision</td>
+            <td>0.221430</td>
+            <td>0.214374</td>
+        </tr>
+        <tr>
+            <td>Recall</td>
+            <td>0.140572</td>
+            <td>0.139826</td>
+        </tr>
+        <tr>
+            <td>ROC AUC</td>
+            <td>0.548564</td>
+            <td>0.547492</td>
+        </tr>
+    </table>
