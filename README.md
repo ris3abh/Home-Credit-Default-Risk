@@ -35,73 +35,143 @@ This project predicts the probability of default for Home Credit loan applicatio
 
 ## Setup and Installation
 
-There are two ways to run this project:
+This project offers three deployment methods, ranging from local development to containerized deployment with CI/CD.
 
-### Method 1: Traditional Setup (Local Environment)
-1. Create a virtual environment:
+### Method 1: Local Development Setup
 ```bash
-python -m venv henv
-```
+# Create virtual environment
+python -m venv venv
 
-2. Activate the virtual environment:
-```bash
+# Activate virtual environment
 # On Unix/macOS:
-source henv/bin/activate
-
+source venv/bin/activate
 # On Windows:
-.\henv\Scripts\activate
-```
+.\venv\Scripts\activate
 
-3. Install dependencies:
-```bash
+# Install dependencies
 pip install -r requirements.txt
+
+# Train model
+cd model_training
+python model_training.py
+
+# Run Flask app
+cd ../credit_fraud_app
+python app.py
 ```
 
-4. Refer to the code in EDA and XGB modeling notebook for initial EDA and model building.
+### Method 2: Docker Containerization (Recommended)
+Prerequisites:
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
-### Method 2: Docker Setup (Recommended)
-
-1. Make sure you have Docker installed on your system. If not, [download and install Docker](https://docs.docker.com/get-docker/).
-
-2. Build the Docker image:
 ```bash
-docker build -t home-credit-model .
+# Build and run using Docker Compose
+docker-compose up --build
+
+# Or build and run containers separately:
+
+# Build and run model training
+cd model_training
+docker build -t model-trainer .
+docker run -v "$(pwd)/models:/app/models" model-trainer
+
+# Build and run web application
+cd ../credit_fraud_app
+docker build -t credit-fraud-app .
+docker run -p 5001:5000 -v "$(pwd)/app/models:/app/app/models" credit-fraud-app
 ```
 
-3. Run the container to train the model:
-```bash
-docker run -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data home-credit-model
-```
+### Method 3: CI/CD Pipeline with Jenkins
+Prerequisites:
+- Jenkins installed ([Installation Guide](https://www.jenkins.io/doc/book/installing/))
+- Docker Hub account ([Sign up](https://hub.docker.com/signup))
+- Docker installed on Jenkins server
 
-Alternatively, using docker-compose:
 ```bash
-docker-compose up
+# 1. Configure Jenkins
+- Install required plugins:
+  - Docker Pipeline
+  - Docker
+  - Pipeline Utility Steps
+  - Slack Notification
+  - Blue Ocean
+
+# 2. Set up Docker Hub credentials in Jenkins
+- Go to Jenkins Dashboard → Credentials → System
+- Add Docker Hub credentials
+- ID: docker-hub-credentials
+
+# 3. Create Jenkins Pipeline
+- New Item → Pipeline
+- Configure Git repository
+- Use Jenkinsfile from SCM
+
+# 4. Run Pipeline
+- Build Now
 ```
 
 ## Project Structure
 ```
-home_credit_default_risk/
-├── code/
-│   ├── Loan defaulters prediction.ipynb
-│   ├── model_testing.py
-│   ├── model_training.py
-│   ├── new EDA.ipynb
-│   └── test_results/
-├── data/
-│   ├── HomeCredit_columns_description.csv
-│   ├── application_test.csv
-│   ├── application_train.csv
-│   └── ... (other data files)
-├── models/
-│   └── model.pkl
-├── src/
-│   └── home_credit.png
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
+HOME-CREDIT-DEFAULT-RISK/
+├── model_training/                 # Model training service
+│   ├── src/
+│   │   ├── model_training.py      # Training script
+│   │   └── model_testing.py       # Testing script
+│   ├── data/                      # Training data
+│   │   ├── application_test.csv
+│   │   └── application_train.csv
+│   ├── models/                    # Trained model storage
+│   │   └── model.pkl
+│   ├── Dockerfile                 # Training container config
+│   └── requirements.txt           # Training dependencies
+│
+├── credit_fraud_app/              # Web application service
+│   ├── app/
+│   │   ├── static/               # CSS, JS files
+│   │   ├── templates/            # HTML templates
+│   │   ├── models/              # Model artifacts
+│   │   └── __init__.py          # Flask app initialization
+│   ├── config/
+│   │   └── config.py            # App configuration
+│   ├── Dockerfile               # Web app container config
+│   └── requirements.txt         # Web app dependencies
+│
+├── jenkins/                      # CI/CD configuration
+│   └── config.yaml              # Jenkins configuration
+│
+├── tests/                       # Test suites
+│   ├── test_app.py             # Web app tests
+│   └── test_model.py           # Model tests
+│
+├── docker-compose.yml           # Container orchestration
+├── Jenkinsfile                 # CI/CD pipeline
+├── .gitignore
 └── README.md
 ```
 
+## Infrastructure Features
+
+### Container Orchestration
+- Multi-container architecture with Docker Compose
+- Separate containers for model training and web application
+- Volume management for model persistence
+- Network isolation between services
+
+### CI/CD Pipeline
+- Automated testing with pytest
+- Code quality checks
+- Docker image building and pushing
+- Automated deployments
+- Security scanning with Trivy
+- Slack notifications for build status
+
+### Development Features
+- Hot-reloading for local development
+- Debug mode configuration
+- Comprehensive logging
+- Environment-based configurations
+- Health check endpoints
 ## Model Training
 
 The model can be trained using either of these methods:
