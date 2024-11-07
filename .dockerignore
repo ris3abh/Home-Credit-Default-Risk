@@ -1,0 +1,13 @@
+*.ipynb
+*.ipynb_checkpoints
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+*.log
+data.zip
+test_results/
