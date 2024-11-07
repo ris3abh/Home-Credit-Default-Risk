@@ -1,108 +1,171 @@
-Credit Fraud Detection Model
-This project implements a credit fraud detection model, designed to handle semantic versioning, environment management, and model registry operations. It provides enhanced version tracking, changelog management, and metadata storage, allowing for a structured and scalable model deployment.
+# 🔒 Credit Fraud Detection Model
 
-Table of Contents
-Project Overview
-Features
-- Version Management
-- Model Registry
-- Version Tracking
-Project Structure
-Getting Started
-- Requirements
-- Setup
-- Usage
-Version Control and Environments
-Model Training and Evaluation
-Changelog Tracking
-Contributing
-License
-Project Overview
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-This repository contains a credit fraud detection model pipeline using XGBoost and Scikit-Learn. The pipeline includes features like version tracking, environment management, and automated model saving and loading for deployment and experimentation in different environments (DEV, STAGING, PROD).
+A robust credit fraud detection system with comprehensive version management, environment control, and model registry operations. Built for scalability and production-ready deployment.
 
-Features
-Version Management
-The model uses semantic versioning `(MAJOR.MINOR.PATCH)` for systematic model updates, managed by the `ModelVersion` class.
+## 📑 Table of Contents
 
-`ModelVersion`: Tracks version metadata, environment, and timestamps.
-`ModelEnvironment`: Manages DEV, STAGING, and PROD environments.
-`Model Registry`: The ModelRegistry class is responsible for storing and retrieving models by version.
+- [Overview](#-overview)
+- [Features](#-features)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+- [Usage](#-usage)
+- [Version Control](#-version-control)
+- [Model Training](#-model-training)
+- [Contributing](#-contributing)
 
-`Version-aware saving/loading`: Enables saving models with unique version identifiers.
-`Metadata storage`: Keeps changelogs, training parameters, and environment information with each model.
-`Version Tracking`: Includes automatic version increments after each training session and changelog tracking for easy reference.
+## 🎯 Overview
 
-Automatic Version Incrementation: Each training session updates the minor version.
-Environment-specific Versioning: Maintains separate versions for each environment.
+This repository implements an advanced credit fraud detection pipeline using XGBoost and Scikit-Learn, featuring:
+- Semantic versioning for model iterations
+- Environment-specific deployment management
+- Automated model registry operations
+- Comprehensive changelog tracking
 
+## ✨ Features
 
-Project Structure
+### 🏗️ Version Management
+- **Semantic Versioning** (`MAJOR.MINOR.PATCH`)
+  ```python
+  version = ModelVersion(1, 0, 0, ModelEnvironment.PROD)
+  ```
+- **Environment Controls** (DEV/STAGING/PROD)
+- **Automated Version Tracking**
+
+### 📦 Model Registry
+- Version-aware model storage
+- Metadata management
+- Historical tracking
+- Environment isolation
+
+### 🔄 Version Tracking
+- Automatic version incrementation
+- Detailed changelogs
+- Training metadata preservation
+
+## 📁 Project Structure
+
+```
 .
-├── Dockerfile               # Dockerfile for containerization
-├── README.md                # Project documentation
-├── data                     # Directory for training and test datasets
+├── 📄 Dockerfile
+├── 📝 README.md
+├── 📁 data/
 │   ├── application_test.csv
 │   └── application_train.csv
-├── models                   # Directory for model storage
+├── 📁 models/
 │   └── model.pkl
-├── requirements.txt         # Python dependencies
-└── src                      # Source code
-    ├── Loan defaulters prediction.ipynb
-    ├── model_testing.py     # Script for testing the model
-    └── model_training.py    # Script for training the model
+├── 📄 requirements.txt
+└── 📁 src/
+    ├── Loan_defaulters_prediction.ipynb
+    ├── model_testing.py
+    └── model_training.py
+```
 
-Getting Started
+## 🚀 Getting Started
 
-Requirements
+### Prerequisites
+
 - Python 3.8+
-- Packages listed in requirements.txt
-- Setup
-- Clone the Repository
+- Required packages from `requirements.txt`
 
-bash
+### Installation
 
-`git clone https://github.com/yourusername/credit-fraud-detection.git`
-`cd credit-fraud-detection`
-`Install Dependencies`
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/yourusername/credit-fraud-detection.git
+   cd credit-fraud-detection
+   ```
 
-`pip install -r requirements.txt`
+2. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Run Training Script
+## 💻 Usage
 
-Use main function in model_training.py to train and evaluate the model with command-line arguments for paths and environment.
+### Training the Model
 
-Usage
+```bash
+python src/model_training.py \
+    --train-path data/application_train.csv \
+    --test-path data/application_test.csv \
+    --model-output models/credit_fraud_model.pkl \
+    --environment dev
+```
 
-Running the Model Training
+## 🔄 Version Control
 
-`python src/model_training.py --train-path data/application_train.csv --test-path data/application_test.csv --model-output models/credit_fraud_model.pkl --environment dev`
-Version Control and Environments
+### Version Format
+```
+v1.0.0-prod-20240401
+│ │ │  │    │
+│ │ │  │    └── Date
+│ │ │  └─────── Environment
+│ │ └────────── Patch
+│ └──────────── Minor
+└────────────── Major
+```
 
-The ModelEnvironment enum `(DEV, STAGING, PROD)` handles environment-specific settings. The ModelVersion class facilitates structured versioning by incrementing minor versions upon each training.
+### Environments
+- 🔧 **DEV**: Development and experimentation
+- 🧪 **STAGING**: Pre-production testing
+- 🚀 **PROD**: Production deployment
 
-Example Version Format
+## 📊 Model Training
 
-v1.0.0-prod-20240401 where:
+### Training Process
+1. Data preprocessing
+2. Feature engineering
+3. Model training
+4. Evaluation
+5. Version increment
+6. Metadata storage
 
-- 1.0.0 represents the MAJOR, MINOR, PATCH version
-- prod is the environment
-- 20240401 is the date the version was created
+### Key Metrics
+- 📈 Precision
+- 📊 Recall
+- 📉 ROC AUC Score
 
-Model Training and Evaluation
-- The CreditFraudModel class provides methods for training and evaluating the model. Each time the model is trained, the version can increment based on the environment.
+### Changelog Example
+```json
+{
+    "version": "v1.0.0-prod-20240401",
+    "changes": [
+        {
+            "type": "training",
+            "description": "Initial model training",
+            "timestamp": "2024-04-01T10:00:00Z"
+        }
+    ]
+}
+```
 
-Training: Trains the model using the provided dataset.
-Evaluation: Evaluates the model and logs evaluation results, saving predictions to predictions.csv if a test dataset is provided.
+## 🤝 Contributing
 
-Key Metrics
-- Precision
-- Recall
-- ROC AUC Score
+1. Fork the repository
+2. Create your feature branch
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. Commit your changes
+   ```bash
+   git commit -m 'Add amazing feature'
+   ```
+4. Push to the branch
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. Open a Pull Request
 
-Changelog Tracking
-Every model version includes a changelog that records changes, training sessions, and other relevant information. The changelog is stored as metadata with each model version.
+## 📝 License
 
-Contributing
-If you wish to contribute, please fork the repository and make a pull request. For major changes, open an issue first to discuss what you would like to change.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+---
+
+<div align="center">
+    Made with ❤️ for better credit fraud detection
+</div>
