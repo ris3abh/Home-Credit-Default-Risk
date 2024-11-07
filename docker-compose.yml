@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  model_trainer:
+    build:
+      context: ./model_training
+      dockerfile: Dockerfile
+    volumes:
+      - ./model_training/models:/app/models
+      - ./model_training/data:/app/data
+
+  credit_fraud_app:
+    build:
+      context: ./credit_fraud_app
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./model_training/models:/app/app/models
+      - ./credit_fraud_app/app/templates:/app/app/templates
+      - ./credit_fraud_app/app/static:/app/app/static
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - TEMPLATES_AUTO_RELOAD=True
+
+volumes:
+  models:

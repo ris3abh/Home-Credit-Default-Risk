@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Fraud Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="split-screen">
+        <!-- Left side - Form -->
+        <div class="form-section">
+            <div class="container">
+                <h1>Credit Fraud Risk Assessment</h1>
+                <form action="{{ url_for('predict') }}" method="post">
+                    <div class="form-group">
+                        <h3>Personal Information</h3>
+                        <label>Gender:
+                            <select name="gender" required>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                        </label>
+                        
+                        <label>Education:
+                            <select name="education" required>
+                                <option value="Higher education">Higher education</option>
+                                <option value="Secondary / secondary special">Secondary</option>
+                                <option value="Incomplete higher">Incomplete higher</option>
+                                <option value="Lower secondary">Lower secondary</option>
+                            </select>
+                        </label>
+        
+                        <label>Number of Children:
+                            <input type="number" name="children" min="0" required>
+                        </label>
+        
+                        <label>Age:
+                            <input type="number" name="age" min="18" max="100" required>
+                        </label>
+                    </div>
+        
+                    <div class="form-group">
+                        <h3>Assets & Employment</h3>
+                        <label>Own Car:
+                            <select name="own_car" required>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select>
+                        </label>
+        
+                        <label>Own Property:
+                            <select name="own_realty" required>
+                                <option value="Y">Yes</option>
+                                <option value="N">No</option>
+                            </select>
+                        </label>
+        
+                        <label>Income Type:
+                            <select name="income_type" required>
+                                <option value="Working">Working</option>
+                                <option value="Commercial associate">Commercial associate</option>
+                                <option value="Pensioner">Pensioner</option>
+                                <option value="State servant">State servant</option>
+                                <option value="Student">Student</option>
+                            </select>
+                        </label>
+        
+                        <label>Years Employed:
+                            <input type="number" name="years_employed" min="0" step="0.1" required>
+                        </label>
+                    </div>
+        
+                    <div class="form-group">
+                        <h3>Financial Information</h3>
+                        <label>Annual Income:
+                            <input type="number" name="income" min="1" value="50000" required>
+                        </label>
+        
+                        <label>Credit Amount:
+                            <input type="number" name="credit_amount" min="1" value="100000" required>
+                        </label>
+        
+                        <label>Annual Payment (Annuity):
+                            <input type="number" name="annuity" min="1" value="12000" required>
+                        </label>
+        
+                        <label>Goods Price:
+                            <input type="number" name="goods_price" min="0" value="90000" required>
+                        </label>
+                    </div>
+        
+                    <div class="form-group">
+                        <h3>Additional Information</h3>
+                        <label>Different City Registration:
+                            <select name="diff_city" required>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </label>
+        
+                        <label>Years Registration:
+                            <input type="number" name="years_registration" min="0" max="100" step="0.1" value="5" required>
+                        </label>
+        
+                        <label>External Source 1 Score:
+                            <input type="number" name="ext_source_1" min="0" max="1" step="0.01" value="0.5" required>
+                        </label>
+        
+                        <label>External Source 2 Score:
+                            <input type="number" name="ext_source_2" min="0" max="1" step="0.01" value="0.5" required>
+                        </label>
+        
+                        <label>External Source 3 Score:
+                            <input type="number" name="ext_source_3" min="0" max="1" step="0.01" value="0.5" required>
+                        </label>
+                    </div>
+                    <button type="submit" class="submit-btn">Assess Risk</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right side - Documentation -->
+        <div class="docs-section">
+            <h2>Documentation & Guide</h2>
+            
+            <div class="tech-stack">
+                <h3>Technical Implementation</h3>
+                <p>This enterprise-grade application leverages cutting-edge technologies and industry best practices:</p>
+                
+                <h4>Architecture & Infrastructure</h4>
+                <ul>
+                    <li><strong>Container Orchestration:</strong>
+                        <ul>
+                            <li>Implemented Docker Compose for complex multi-container orchestration</li>
+                            <li>Engineered seamless communication between services using Docker networks</li>
+                            <li>Optimized container configurations for production deployment</li>
+                            <li>Implemented volume management for persistent model storage</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Microservices Architecture:</strong>
+                        <ul>
+                            <li>Designed decoupled services for model training and inference</li>
+                            <li>Implemented asynchronous inter-service communication</li>
+                            <li>Containerized each component for independent scaling</li>
+                            <li>Engineered fault-tolerant service integration</li>
+                        </ul>
+                    </li>
+                </ul>
+            
+                <h4>Machine Learning Pipeline</h4>
+                <ul>
+                    <li><strong>Model Development:</strong>
+                        <ul>
+                            <li>Implemented XGBoost with advanced hyperparameter tuning</li>
+                            <li>Engineered custom feature preprocessing pipeline</li>
+                            <li>Developed robust data validation and cleaning mechanisms</li>
+                            <li>Implemented automated model retraining capabilities</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Data Processing:</strong>
+                        <ul>
+                            <li>Built sophisticated feature engineering pipeline</li>
+                            <li>Implemented memory-optimized data processing</li>
+                            <li>Developed custom data transformation algorithms</li>
+                            <li>Engineered efficient data validation checks</li>
+                        </ul>
+                    </li>
+                </ul>
+            
+                <h4>Web Application</h4>
+                <ul>
+                    <li><strong>Backend Architecture:</strong>
+                        <ul>
+                            <li>Developed RESTful API using Flask framework</li>
+                            <li>Implemented robust error handling and logging</li>
+                            <li>Engineered efficient model serving pipeline</li>
+                            <li>Built scalable request handling architecture</li>
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Frontend Development:</strong>
+                        <ul>
+                            <li>Designed responsive and intuitive user interface</li>
+                            <li>Implemented client-side validation</li>
+                            <li>Engineered dynamic form handling</li>
+                            <li>Built interactive result visualization</li>
+                        </ul>
+                    </li>
+                </ul>
+            
+                <h4>DevOps & Deployment</h4>
+                <ul>
+                    <li><strong>Development Workflow:</strong>
+                        <ul>
+                            <li>Implemented containerized development environment</li>
+                            <li>Engineered automated build processes</li>
+                            <li>Developed comprehensive logging system</li>
+                            <li>Built robust error monitoring</li>
+                        </ul>
+                    </li>
+                </ul>
+            
+                <h4>Performance Optimization</h4>
+                <ul>
+                    <li><strong>System Efficiency:</strong>
+                        <ul>
+                            <li>Optimized Docker image sizes for faster deployment</li>
+                            <li>Implemented efficient model serialization</li>
+                            <li>Engineered memory-efficient data processing</li>
+                            <li>Developed performance monitoring capabilities</li>
+                        </ul>
+                    </li>
+                </ul>
+            
+                <div class="tech-highlights">
+                    <h4>Key Technical Highlights</h4>
+                    <ul>
+                        <li><strong>Scalability:</strong> Microservices architecture enables independent scaling of components</li>
+                        <li><strong>Reliability:</strong> Robust error handling and service recovery mechanisms</li>
+                        <li><strong>Maintainability:</strong> Modular design with clear separation of concerns</li>
+                        <li><strong>Performance:</strong> Optimized for both training and inference workloads</li>
+                        <li><strong>Security:</strong> Implemented best practices for container security</li>
+                    </ul>
+                </div>
+            
+                <div class="tech-metrics">
+                    <h4>Implementation Metrics</h4>
+                    <ul>
+                        <li><strong>Services:</strong> 2 containerized microservices</li>
+                        <li><strong>Dependencies:</strong> 15+ optimized Python packages</li>
+                        <li><strong>Features:</strong> 20+ engineered model features</li>
+                        <li><strong>API Endpoints:</strong> Multiple REST endpoints for prediction and monitoring</li>
+                        <li><strong>Testing:</strong> Comprehensive test coverage for critical components</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Field Explanations</h3>
+            
+            <div class="field-explanation">
+                <h4>Personal Information</h4>
+                <ul>
+                    <li><strong>Gender:</strong> Applicant's gender (M/F)</li>
+                    <li><strong>Education:</strong> Highest level of education achieved</li>
+                    <li><strong>Number of Children:</strong> Number of dependent children</li>
+                    <li><strong>Age:</strong> Applicant's age in years (must be 18 or older)</li>
+                </ul>
+            </div>
+
+            <div class="field-explanation">
+                <h4>Assets & Employment</h4>
+                <ul>
+                    <li><strong>Own Car/Property:</strong> Whether the applicant owns a car or property</li>
+                    <li><strong>Income Type:</strong> Source of regular income</li>
+                    <li><strong>Years Employed:</strong> Duration of current employment</li>
+                </ul>
+            </div>
+
+            <div class="field-explanation">
+                <h4>External Source Scores</h4>
+                <p>These are normalized scores from external data sources (range 0-1):</p>
+                <ul>
+                    <li><strong>Source 1:</strong> Credit bureau score</li>
+                    <li><strong>Source 2:</strong> Alternative credit scoring</li>
+                    <li><strong>Source 3:</strong> Behavioral scoring</li>
+                </ul>
+            </div>
+
+            <div class="sample-data">
+                <h3>Sample Profiles</h3>
+                <h4>Low Risk Profile:</h4>
+                <ul>
+                    <li>Age: 35</li>
+                    <li>Income: 75000</li>
+                    <li>Years Employed: 8</li>
+                    <li>Education: Higher education</li>
+                    <li>External Scores: > 0.6</li>
+                </ul>
+
+                <h4>Medium Risk Profile:</h4>
+                <ul>
+                    <li>Age: 25</li>
+                    <li>Income: 45000</li>
+                    <li>Years Employed: 2</li>
+                    <li>Education: Secondary</li>
+                    <li>External Scores: 0.4-0.6</li>
+                </ul>
+            </div>
+
+            <div class="tech-stack">
+                <h3>How It Works</h3>
+                <p>The application follows these steps:</p>
+                <ol>
+                    <li>Data is collected through the form</li>
+                    <li>Features are preprocessed using the same pipeline as training</li>
+                    <li>Model makes a prediction using XGBoost</li>
+                    <li>Results are displayed with risk assessment</li>
+                </ol>
+            </div>
+
+            <div class="field-explanation">
+                <h3>Important Notes</h3>
+                <ul>
+                    <li>All fields are required for accurate prediction</li>
+                    <li>External source scores significantly impact the prediction</li>
+                    <li>The model is regularly retrained with new data</li>
+                    <li>Predictions are for informational purposes only</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

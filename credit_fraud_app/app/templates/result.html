@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Assessment Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container result-container">
+        <h1>Risk Assessment Result</h1>
+        <div class="result-card {{ 'high-risk' if result.prediction == 1 else 'low-risk' }}">
+            <h2>Risk Level: {{ result.risk_level }}</h2>
+            <p class="probability">Probability of Default: {{ "%.2f"|format(result.probability * 100) }}%</p>
+            <p class="timestamp">Assessment Time: {{ result.timestamp }}</p>
+        </div>
+        <a href="{{ url_for('home') }}" class="back-btn">New Assessment</a>
+    </div>
+</body>
+</html>
