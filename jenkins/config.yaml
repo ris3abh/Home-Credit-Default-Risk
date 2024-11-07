@@ -1,0 +1,38 @@
+jenkins:
+  systemMessage: "Jenkins for Credit Fraud Detection App"
+  numExecutors: 2
+  scmCheckoutRetryCount: 2
+  mode: NORMAL
+  
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: admin
+          password: ${JENKINS_ADMIN_PASSWORD}
+  
+  authorizationStrategy:
+    roleBased:
+      roles:
+        global:
+          - name: "admin"
+            permissions:
+              - "Overall/Administer"
+          - name: "developer"
+            permissions:
+              - "Overall/Read"
+              - "Job/Build"
+              - "Job/Cancel"
+  
+  clouds:
+    - docker:
+        name: "docker"
+        dockerApi:
+          dockerHost:
+            uri: "unix:///var/run/docker.sock"
+        templates:
+          - labelString: "docker-agent"
+            dockerTemplateBase:
+              image: "jenkins/agent:latest"
+              volumes:
+                - "/var/run/docker.sock:/var/run/docker.sock"
