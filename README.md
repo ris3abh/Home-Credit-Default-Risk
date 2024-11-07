@@ -1,264 +1,211 @@
-# Home Credit Default Risk
+# 🏦 Home Credit Default Risk Prediction
 
-## Description
-Many people struggle to get loans due to insufficient or non-existent credit histories. Unfortunately, this population is often taken advantage of by untrustworthy lenders. 
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Docker](https://img.shields.io/badge/docker-enabled-brightgreen.svg)](https://www.docker.com/)
+[![Jenkins](https://img.shields.io/badge/jenkins-automated-red.svg)](https://www.jenkins.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Home Credit Group** strives to broaden financial inclusion for the unbanked population by providing a positive and safe borrowing experience. To ensure this underserved population has a positive loan experience, Home Credit utilizes a variety of alternative data—including telco and transactional information—to predict their clients' repayment abilities.
+## 🎯 Business Problem
 
-While Home Credit is currently using various statistical and machine learning methods to make these predictions, they are challenging Kagglers to help them unlock the full potential of their data. Doing so will ensure that clients capable of repayment are not rejected and that loans are given with a principal, maturity, and repayment calendar that will empower their clients to be successful.
+Many individuals struggle to access loans due to:
+- Insufficient credit history
+- Non-existent credit records
+- Vulnerability to predatory lenders
 
-## Dataset Description
-The datasets used in this project include:
+**Home Credit Group's Mission**: Expand financial inclusion for the unbanked population by:
+- Providing safe borrowing experiences
+- Using alternative data for credit assessment
+- Ensuring fair loan approval processes
+
+## 📊 Data Infrastructure
 
 ![Data Representation](src/home_credit.png)
 
+### Core Datasets
 
-- **application_{train|test}.csv**: Static data for all applications. One row represents one loan in our data sample.
-- **bureau.csv**: All client's previous credits provided by other financial institutions that were reported to Credit Bureau.
-- **bureau_balance.csv**: Monthly balances of previous credits in Credit Bureau.
-- **POS_CASH_balance.csv**: Monthly balance snapshots of previous POS (point of sales) and cash loans that the applicant had with Home Credit.
-- **credit_card_balance.csv**: Monthly balance snapshots of previous credit cards that the applicant has with Home Credit.
-- **previous_application.csv**: All previous applications for Home Credit loans of clients who have loans in our sample.
-- **installments_payments.csv**: Repayment history for the previously disbursed credits in Home Credit related to the loans in our sample.
-- **HomeCredit_columns_description.csv**: Descriptions for the columns in the various data files.
+| Dataset | Description | Size | Key Features |
+|---------|-------------|------|--------------|
+| `application_{train\|test}.csv` | Static application data | 500K+ rows | Demographic, financial info |
+| `bureau.csv` | Credit Bureau records | 1.7M+ rows | Previous credits history |
+| `bureau_balance.csv` | Monthly Credit Bureau data | 27M+ rows | Credit status changes |
+| `POS_CASH_balance.csv` | Point of Sale/Cash loans data | 10M+ rows | Monthly loan snapshots |
+| `credit_card_balance.csv` | Credit card history | 3.8M+ rows | Card usage patterns |
+| `previous_application.csv` | Previous loan applications | 1.6M+ rows | Application history |
+| `installments_payments.csv` | Repayment history | 13M+ rows | Payment patterns |
 
-## Evaluation
-Submissions are evaluated on the area under the ROC curve between the predicted probability and the observed target.
+## 🚀 Deployment Options
 
-
-The project implements a robust CI/CD pipeline using Jenkins, Docker, and automated testing frameworks to ensure reliable model deployment and application updates. The pipeline orchestrates multiple stages: it begins with automated testing of the machine learning components, proceeds through model training in an isolated container, performs security scanning using Trivy, and concludes with containerized deployment of the Flask web application. The multi-stage Dockerfile optimizes the build process, while Docker Compose manages the microservices architecture, separating the model training and web serving components. The pipeline automatically pushes versioned Docker images to Docker Hub, enabling seamless rollbacks if needed. Environment variables and Jenkins credentials store manage sensitive information securely, while the modular structure allows independent scaling of components. Automated Slack notifications keep stakeholders informed of deployment status, and the containerized approach ensures consistency across development, staging, and production environments. Each commit triggers automated tests, model validation, and if successful, updates the production environment with zero-downtime deployments.
-
-**Key Technical Features:**
-- Automated ML model training and validation pipeline
-- Containerized microservices architecture using Docker and Docker Compose
-- Jenkins pipeline with multi-stage builds and security scanning
-- Automated testing and quality assurance
-- Continuous deployment with versioned Docker images
-- Zero-downtime updates and automated rollback capabilities
-- Secure credentials management and environment configuration
-- Real-time deployment status notifications
-
-
-## Setup and Installation
-
-This project offers three deployment methods, ranging from local development to containerized deployment with CI/CD.
-
-### Method 1: Local Development Setup
+### 1️⃣ Local Development
 ```bash
-# Create virtual environment
+# Setup virtual environment
 python -m venv venv
+source venv/bin/activate  # Unix/macOS
+.\venv\Scripts\activate   # Windows
 
-# Activate virtual environment
-# On Unix/macOS:
-source venv/bin/activate
-# On Windows:
-.\venv\Scripts\activate
-
-# Install dependencies
+# Install & Train
 pip install -r requirements.txt
+python model_training/src/model_training.py
 
-# Train model
-cd model_training
-python model_training.py
-
-# Run Flask app
-cd ../credit_fraud_app
-python app.py
+# Launch Application
+python credit_fraud_app/app.py
 ```
 
-### Method 2: Docker Containerization (Recommended)
-Prerequisites:
-- [Docker](https://docs.docker.com/get-docker/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-
+### 2️⃣ Docker Deployment (Recommended)
 ```bash
-# Build and run using Docker Compose
+# Full Stack Deployment
 docker-compose up --build
 
-# Or build and run containers separately:
-
-# Build and run model training
+# Individual Components
+# Model Training
 cd model_training
 docker build -t model-trainer .
 docker run -v "$(pwd)/models:/app/models" model-trainer
 
-# Build and run web application
-cd ../credit_fraud_app
+# Web Application
+cd credit_fraud_app
 docker build -t credit-fraud-app .
-docker run -p 5001:5000 -v "$(pwd)/app/models:/app/app/models" credit-fraud-app
+docker run -p 5001:5000 credit-fraud-app
 ```
 
-### Method 3: CI/CD Pipeline with Jenkins
-Prerequisites:
-- Jenkins installed ([Installation Guide](https://www.jenkins.io/doc/book/installing/))
-- Docker Hub account ([Sign up](https://hub.docker.com/signup))
-- Docker installed on Jenkins server
+### 3️⃣ CI/CD Pipeline (Production)
 
-```bash
-# 1. Configure Jenkins
-- Install required plugins:
-  - Docker Pipeline
-  - Docker
-  - Pipeline Utility Steps
-  - Slack Notification
-  - Blue Ocean
-
-# 2. Set up Docker Hub credentials in Jenkins
-- Go to Jenkins Dashboard → Credentials → System
-- Add Docker Hub credentials
-- ID: docker-hub-credentials
-
-# 3. Create Jenkins Pipeline
-- New Item → Pipeline
-- Configure Git repository
-- Use Jenkinsfile from SCM
-
-# 4. Run Pipeline
-- Build Now
+```mermaid
+graph LR
+    A[Code Push] --> B[Jenkins Pipeline]
+    B --> C[Automated Tests]
+    C --> D[Docker Build]
+    D --> E[Security Scan]
+    E --> F[Deploy]
+    F --> G[Health Check]
+    G --> H[Notifications]
 ```
 
-## Project Structure
+## 🏗️ Architecture
+
 ```
 HOME-CREDIT-DEFAULT-RISK/
-├── model_training/                 # Model training service
+├── 🔮 model_training/          # ML Pipeline
 │   ├── src/
-│   │   ├── model_training.py      # Training script
-│   │   └── model_testing.py       # Testing script
-│   ├── data/                      # Training data
-│   │   ├── application_test.csv
-│   │   └── application_train.csv
-│   ├── models/                    # Trained model storage
-│   │   └── model.pkl
-│   ├── Dockerfile                 # Training container config
-│   └── requirements.txt           # Training dependencies
-│
-├── credit_fraud_app/              # Web application service
+│   │   ├── model_training.py   # Training logic
+│   │   └── model_testing.py    # Testing suite
+│   ├── data/                   # Data storage
+│   ├── models/                 # Model artifacts
+│   └── Dockerfile             
+├── 🌐 credit_fraud_app/        # Web Service
 │   ├── app/
-│   │   ├── static/               # CSS, JS files
-│   │   ├── templates/            # HTML templates
-│   │   ├── models/              # Model artifacts
-│   │   └── __init__.py          # Flask app initialization
-│   ├── config/
-│   │   └── config.py            # App configuration
-│   ├── Dockerfile               # Web app container config
-│   └── requirements.txt         # Web app dependencies
-│
-├── jenkins/                      # CI/CD configuration
-│   └── config.yaml              # Jenkins configuration
-│
-├── tests/                       # Test suites
-│   ├── test_app.py             # Web app tests
-│   └── test_model.py           # Model tests
-│
-├── docker-compose.yml           # Container orchestration
-├── Jenkinsfile                 # CI/CD pipeline
-├── .gitignore
-└── README.md
+│   │   ├── static/            # Frontend assets
+│   │   ├── templates/         # UI templates
+│   │   └── models/           # Model deployment
+│   └── Dockerfile
+├── 🔄 jenkins/                 # CI/CD Config
+└── 🐳 docker-compose.yml      # Orchestration
 ```
 
-## Infrastructure Features
+## 📊 Model Performance
 
-### Container Orchestration
-- Multi-container architecture with Docker Compose
-- Separate containers for model training and web application
-- Volume management for model persistence
-- Network isolation between services
+| Metric    | Training | Testing |
+|-----------|----------|---------|
+| Accuracy  | 89.06%   | 88.96%  |
+| Precision | 22.14%   | 21.44%  |
+| Recall    | 14.06%   | 13.98%  |
+| ROC AUC   | 54.86%   | 54.75%  |
 
-### CI/CD Pipeline
-- Automated testing with pytest
-- Code quality checks
-- Docker image building and pushing
-- Automated deployments
-- Security scanning with Trivy
-- Slack notifications for build status
+### 📈 Performance Analysis
 
-### Development Features
-- Hot-reloading for local development
-- Debug mode configuration
-- Comprehensive logging
-- Environment-based configurations
-- Health check endpoints
-## Model Training
+```python
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-The model can be trained using either of these methods:
+# ROC Curve Visualization
+plt.figure(figsize=(10, 6))
+plt.plot(fpr, tpr, label=f'ROC (AUC = {roc_auc:.3f})')
+plt.plot([0, 1], [0, 1], 'k--')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('ROC Curve')
+plt.legend()
+plt.show()
+```
 
-1. Using Python directly:
+## 🛠️ Quick Commands
+
+### Docker Operations
 ```bash
-python model_training.py --train-path ../data/application_train.csv --model-output ../models/model.pkl
+# Build Services
+docker-compose build
+
+# Launch Stack
+docker-compose up -d
+
+# Check Status
+docker-compose ps
+
+# View Logs
+docker-compose logs -f
+
+# Shutdown
+docker-compose down
 ```
 
-2. Using Docker:
+### Model Training
 ```bash
-docker run -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data home-credit-model
+# Local Training
+python model_training.py \
+    --train-path data/application_train.csv \
+    --test-path data/application_test.csv \
+    --model-output models/credit_model.pkl
+
+# Containerized Training
+docker run -v $(pwd)/data:/app/data \
+           -v $(pwd)/models:/app/models \
+           model-trainer
 ```
 
-## Docker Commands Reference
+## 🔄 CI/CD Pipeline Features
 
-- Build the image:
-```bash
-docker build -t home-credit-model .
-```
+- **Automated Testing**: Unit tests, integration tests
+- **Quality Checks**: Code style, complexity
+- **Security**: Trivy scanning, dependency checks
+- **Deployment**: Blue-green deployment strategy
+- **Monitoring**: Health checks, performance metrics
+- **Notifications**: Slack integration
 
-- Run the container:
-```bash
-docker run -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data home-credit-model
-```
+## 📝 Development Notes
 
-- Check container status:
-```bash
-docker ps
-```
+1. **Data Preprocessing**
+   - Handle missing values
+   - Feature engineering
+   - Scaling/normalization
 
-- View container logs:
-```bash
-docker logs <container_id>
-```
+2. **Model Training**
+   - XGBoost implementation
+   - Hyperparameter optimization
+   - Cross-validation
 
-- Stop the container:
-```bash
-docker stop <container_id>
-```
+3. **Deployment**
+   - Model serialization
+   - API endpoint creation
+   - Load balancing setup
 
-- Access container shell (for debugging):
-```bash
-docker exec -it <container_id> /bin/bash
-```
+## 🤝 Contributing
 
-## Notes
-- The model outputs are saved to the `models` directory
-- Docker volumes are used to persist the trained model and access data
-- Make sure all required data files are present in the `data` directory before running the container
+1. Fork the repository
+2. Create feature branch
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. Commit changes
+   ```bash
+   git commit -m 'Add amazing feature'
+   ```
+4. Push to branch
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. Create Pull Request
 
+---
 
-<h2 style="text-align: center;">Model Performance</h2>
-    <table>
-        <tr>
-            <th>Metric</th>
-            <th>Train</th>
-            <th>Test</th>
-        </tr>
-        <tr>
-            <td>Accuracy</td>
-            <td>0.890630</td>
-            <td>0.889550</td>
-        </tr>
-        <tr>
-            <td>Precision</td>
-            <td>0.221430</td>
-            <td>0.214374</td>
-        </tr>
-        <tr>
-            <td>Recall</td>
-            <td>0.140572</td>
-            <td>0.139826</td>
-        </tr>
-        <tr>
-            <td>ROC AUC</td>
-            <td>0.548564</td>
-            <td>0.547492</td>
-        </tr>
-    </table>
-
-Overall, the model shows reasonably consistent performance across the training and test sets, as indicated by similar values for accuracy, precision, recall, and ROC AUC. This consistency suggests that the model is not overfitting excessively to the training data and is generalizing reasonably well to unseen data. However, the low values of precision and recall indicate that the model may need further tuning or feature engineering to improve its ability to correctly classify positive cases (defaults) while minimizing false positives and false negatives.
-
-The fact that, even the SMOTING algorithm was not helpful to improve the model performance, it is possible that the model is not able to capture the underlying patterns in the data effectively. This could be due to the presence of noise or irrelevant features in the dataset, or it could be a limitation of the chosen algorithm. Further exploration of the data and experimentation with different algorithms and hyperparameters may be necessary to improve the model's performance.
+<div align="center">
+    <strong>🏦 Empowering Financial Inclusion Through Technology 🚀</strong>
+</div>
