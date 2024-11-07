@@ -5,6 +5,9 @@
 [![Jenkins](https://img.shields.io/badge/jenkins-automated-red.svg)](https://www.jenkins.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+![Uploading image.png…]()
+
+
 ## 🎯 Business Problem
 
 Many individuals struggle to access loans due to:
