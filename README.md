@@ -25,13 +25,19 @@ The datasets used in this project include:
 ## Evaluation
 Submissions are evaluated on the area under the ROC curve between the predicted probability and the observed target.
 
-### Submission File
-For each `SK_ID_CURR` in the test set, you must predict a probability for the `TARGET` variable. The file should contain a header and have the following format:
 
+The project implements a robust CI/CD pipeline using Jenkins, Docker, and automated testing frameworks to ensure reliable model deployment and application updates. The pipeline orchestrates multiple stages: it begins with automated testing of the machine learning components, proceeds through model training in an isolated container, performs security scanning using Trivy, and concludes with containerized deployment of the Flask web application. The multi-stage Dockerfile optimizes the build process, while Docker Compose manages the microservices architecture, separating the model training and web serving components. The pipeline automatically pushes versioned Docker images to Docker Hub, enabling seamless rollbacks if needed. Environment variables and Jenkins credentials store manage sensitive information securely, while the modular structure allows independent scaling of components. Automated Slack notifications keep stakeholders informed of deployment status, and the containerized approach ensures consistency across development, staging, and production environments. Each commit triggers automated tests, model validation, and if successful, updates the production environment with zero-downtime deployments.
 
-# Home Credit Default Risk Prediction
+**Key Technical Features:**
+- Automated ML model training and validation pipeline
+- Containerized microservices architecture using Docker and Docker Compose
+- Jenkins pipeline with multi-stage builds and security scanning
+- Automated testing and quality assurance
+- Continuous deployment with versioned Docker images
+- Zero-downtime updates and automated rollback capabilities
+- Secure credentials management and environment configuration
+- Real-time deployment status notifications
 
-This project predicts the probability of default for Home Credit loan applications. The model generates predictions for each `SK_ID_CURR` in the test set, estimating the probability for the `TARGET` variable.
 
 ## Setup and Installation
 
