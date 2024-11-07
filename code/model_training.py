@@ -208,20 +208,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-# setuptools==65.5.0
-# six==1.16.0
-# threadpoolctl==3.5.0
-# tzdata==2024.1
-# matplotlib==3.9.0
-# seaborn==0.13.2
-# xgboost==2.1.0
-# imblearn==0.0
-# lightgbm==4.4.0
-# joblib==1.4.2
-# numpy>=1.24.3,<2.0.0
-# pandas==2.0.2
-# python-dateutil==2.9.0.post0
-# pytz==2024.1
-# scikit-learn==1.3.2
-# scipy==1.10.1

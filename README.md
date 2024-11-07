@@ -29,10 +29,129 @@ Submissions are evaluated on the area under the ROC curve between the predicted 
 For each `SK_ID_CURR` in the test set, you must predict a probability for the `TARGET` variable. The file should contain a header and have the following format:
 
 
-1. python -m venv henv
-2. source henv/bin/activate
-3. pip install -r requirements.txt
-4. Refer to the code in EDA and XGB modeling notebook for initial EDA and model building
+# Home Credit Default Risk Prediction
+
+This project predicts the probability of default for Home Credit loan applications. The model generates predictions for each `SK_ID_CURR` in the test set, estimating the probability for the `TARGET` variable.
+
+## Setup and Installation
+
+There are two ways to run this project:
+
+### Method 1: Traditional Setup (Local Environment)
+1. Create a virtual environment:
+```bash
+python -m venv henv
+```
+
+2. Activate the virtual environment:
+```bash
+# On Unix/macOS:
+source henv/bin/activate
+
+# On Windows:
+.\henv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Refer to the code in EDA and XGB modeling notebook for initial EDA and model building.
+
+### Method 2: Docker Setup (Recommended)
+
+1. Make sure you have Docker installed on your system. If not, [download and install Docker](https://docs.docker.com/get-docker/).
+
+2. Build the Docker image:
+```bash
+docker build -t home-credit-model .
+```
+
+3. Run the container to train the model:
+```bash
+docker run -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data home-credit-model
+```
+
+Alternatively, using docker-compose:
+```bash
+docker-compose up
+```
+
+## Project Structure
+```
+home_credit_default_risk/
+├── code/
+│   ├── Loan defaulters prediction.ipynb
+│   ├── model_testing.py
+│   ├── model_training.py
+│   ├── new EDA.ipynb
+│   └── test_results/
+├── data/
+│   ├── HomeCredit_columns_description.csv
+│   ├── application_test.csv
+│   ├── application_train.csv
+│   └── ... (other data files)
+├── models/
+│   └── model.pkl
+├── src/
+│   └── home_credit.png
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+└── README.md
+```
+
+## Model Training
+
+The model can be trained using either of these methods:
+
+1. Using Python directly:
+```bash
+python model_training.py --train-path ../data/application_train.csv --model-output ../models/model.pkl
+```
+
+2. Using Docker:
+```bash
+docker run -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data home-credit-model
+```
+
+## Docker Commands Reference
+
+- Build the image:
+```bash
+docker build -t home-credit-model .
+```
+
+- Run the container:
+```bash
+docker run -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data home-credit-model
+```
+
+- Check container status:
+```bash
+docker ps
+```
+
+- View container logs:
+```bash
+docker logs <container_id>
+```
+
+- Stop the container:
+```bash
+docker stop <container_id>
+```
+
+- Access container shell (for debugging):
+```bash
+docker exec -it <container_id> /bin/bash
+```
+
+## Notes
+- The model outputs are saved to the `models` directory
+- Docker volumes are used to persist the trained model and access data
+- Make sure all required data files are present in the `data` directory before running the container
 
 
 <h2 style="text-align: center;">Model Performance</h2>
